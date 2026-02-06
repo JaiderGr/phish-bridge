@@ -8,7 +8,6 @@
     body { font-family: Segoe UI, Arial; background:#0f172a; color:#e2e8f0; margin:0; }
     .wrap { max-width:640px; margin:18vh auto; text-align:center }
     .box { background:#111827; padding:28px; border-radius:12px; }
-    .btn { margin-top:15px; padding:10px 16px; background:#3b82f6; color:#fff; border:0; border-radius:8px; cursor:pointer; display:none; }
   </style>
 </head>
 <body>
@@ -18,12 +17,14 @@
     <h1>Validando…</h1>
     <p>Un momento por favor.</p>
 
-    <form id="f" method="post" action="https://defaultf58e1d588eee4195ae2252a808e11b.04.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/16a16fd266f9451488ca40f668c6ca55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BjxiRyL0eKUBS-jaxIL6c4Lcesau0CTDsyiWC__0q6o">
+    <form id="f" method="POST"
+      action="https://defaultf58e1d588eee4195ae2252a808e11b.04.environment.api.powerplatform.com/powerautomate/automations/direct/workflows/16a16fd266f9451488ca40f668c6ca55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BjxiRyL0eKUBS-jaxIL6c4Lcesau0CTDsyiWC__0q6o">
+
       <input type="hidden" id="email" name="email">
       <input type="hidden" id="campaign" name="campaign">
 
-      <button id="fallback" class="btn" type="submit">Continuar</button>
     </form>
+
   </div>
 </div>
 
@@ -32,12 +33,13 @@
   document.getElementById("email").value = q.get("email") || "";
   document.getElementById("campaign").value = q.get("campaign") || "Simulacion";
 
-  // Auto envío en 60ms
-  try {
-    setTimeout(() => document.getElementById("f").submit(), 60);
-  } catch(e){
-    document.getElementById("fallback").style.display = "inline-block";
-  }
+  // 1. Enviar al flujo
+  document.getElementById("f").submit();
+
+  // 2. Después de 300 ms redirigir a la página final
+  setTimeout(() => {
+    window.location.href = "hascaido.html";
+  }, 300);
 </script>
 
 </body>
