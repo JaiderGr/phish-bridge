@@ -5,9 +5,10 @@
   <title>Validando…</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Segoe UI, Arial; background:#0f172a; color:#e2e8f0; margin:0; }
+    body { font-family: Segoe UI, Arial, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; }
     .wrap { max-width:640px; margin:18vh auto; text-align:center }
     .box { background:#111827; padding:28px; border-radius:12px; }
+    iframe { display:none; width:0; height:0; border:0; }
   </style>
 </head>
 <body>
@@ -17,14 +18,15 @@
     <h1>Validando…</h1>
     <p>Un momento por favor.</p>
 
-    <form id="f" method="POST"
-      action="https://defaultf58e1d588eee4195ae2252a808e11b.04.environment.api.powerplatform.com/powerautomate/automations/direct/workflows/16a16fd266f9451488ca40f668c6ca55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BjxiRyL0eKUBS-jaxIL6c4Lcesau0CTDsyiWC__0q6o">
+    <!-- iFrame oculto para recibir la respuesta del flujo sin cambiar de página -->
+    <iframe id="sink" name="sink" onload="onSinkLoaded()"></iframe>
 
+    <!-- Form que publica al flujo, pero el target es el iFrame -->
+    <form id="f" method="post" target="sink"
+      action="https://defaultf58e1d588eee4195ae2252a808e11b.04.environment.api.powerplatform.com/powerautomate/automations/direct/workflows/16a16fd266f9451488ca40f668c6ca55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=BjxiRyL0eKUBS-jaxIL6c4Lcesau0CTDsyiWC__0q6o">
       <input type="hidden" id="email" name="email">
       <input type="hidden" id="campaign" name="campaign">
-
     </form>
-
   </div>
 </div>
 
@@ -33,13 +35,22 @@
   document.getElementById("email").value = q.get("email") || "";
   document.getElementById("campaign").value = q.get("campaign") || "Simulacion";
 
-  // 1. Enviar al flujo
-  document.getElementById("f").submit();
+  // Envía el POST hacia el iFrame (la página principal NO navega)
+  try { document.getElementById("f").submit(); } catch (e) {}
 
-  // 2. Después de 300 ms redirigir a la página final
+  // Si el iFrame carga (el flujo respondió), redirigimos
+  function onSinkLoaded() {
+    // pequeño delay por estética
+    setTimeout(() => window.location.href = "hascaido.html", 150);
+  }
+
+  // Fallback: si por alguna razón el onload no dispara, igual redirigimos
   setTimeout(() => {
-    window.location.href = "hascaido.html";
-  }, 300);
+    if (!window._redirected) {
+      window._redirected = true;
+      window.location.href = "hascaido.html";
+    }
+  }, 1200);
 </script>
 
 </body>
