@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Portal Corporativo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Segoe UI, Arial;
+      background:#0f172a;
+      color:#e5e7eb;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+    .box {
+      background:#111827;
+      padding:30px;
+      border-radius:12px;
+      width:320px;
+    }
+    input, button {
+      width:100%;
+      padding:10px;
+      margin-top:10px;
+      border-radius:6px;
+      border:none;
+    }
+    button {
+      background:#2563eb;
+      color:white;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Iniciar sesión</h2>
+
+  <form method="post"
+    action="https://defaultf58e1d588eee4195ae2252a808e11b.04.environment.api.powerplatform.com/powerautomate/automations/direct/workflows/16a16fd266f9451488ca40f668c6ca55/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=TU_SIG_AQUI">
+
+    <input type="email" name="email" placeholder="correo@empresa.com" required>
+    <input type="password" placeholder="Contraseña" required>
+
+    <input type="hidden" name="campaign" value="Simulacion Seguridad">
+
+    <button type="submit">Iniciar sesión</button>
+  </form>
+</div>
+
+</body>
+</html>
+
