@@ -3,77 +3,26 @@
 <head>
   <meta charset="utf-8">
   <title>Validando…</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: Segoe UI, Arial, sans-serif;
-      background:#0f172a;
-      color:#e2e8f0;
-      margin:0;
-    }
-    .wrap {
-      max-width:640px;
-      margin:18vh auto;
-      text-align:center;
-    }
-    .box {
-      background:#111827;
-      padding:28px;
-      border-radius:12px;
-    }
-    iframe {
-      display:none;
-      width:0;
-      height:0;
-      border:0;
-    }
-  </style>
 </head>
-
 <body>
 
-<div class="wrap">
-  <div class="box">
-    <h1>Validando…</h1>
-    <p>Un momento por favor.</p>
-
-    <!-- iframe oculto -->
-    <iframe id="sink" name="sink" onload="onSinkLoaded()"></iframe>
-
-    <!-- FORM hacia Power Automate -->
-    <form id="f" method="post" target="sink"
-      action="PEGA_AQUI_TU_URL_DE_POWER_AUTOMATE">
-      <input type="hidden" id="email" name="email">
-      <input type="hidden" id="campaign" name="campaign">
-    </form>
-  </div>
-</div>
+Validando…
 
 <script>
-  const q = new URLSearchParams(window.location.search);
+const q = new URLSearchParams(window.location.search);
 
-  document.getElementById("email").value =
-    q.get("email") || "desconocido@sin-email";
-
-  document.getElementById("campaign").value =
-    q.get("campaign") || "Simulacion Phishing";
-
-  // Enviar POST al flujo
-  try {
-    document.getElementById("f").submit();
-  } catch (e) {}
-
-  // Cuando el flujo responde → redirige
-  function onSinkLoaded() {
-    setTimeout(() => {
-      window.location.href = "hascaido.html";
-    }, 200);
-  }
-
-  // Fallback por si el iframe no responde
-  setTimeout(() => {
-    window.location.href = "hascaido.html";
-  }, 1500);
+fetch("PEGA_AQUI_LA_URL_DE_TU_FLUJO", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    email: q.get("email"),
+    campaign: q.get("campaign") || "Simulacion"
+  })
+}).finally(() => {
+  window.location.href = "hascaido.html";
+});
 </script>
 
 </body>
